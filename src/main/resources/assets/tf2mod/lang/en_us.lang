@@ -1,0 +1,10 @@
+#Blocks
+tile.foodkit.name=Food Supply Kit
+tile.mannco_case.name=Mann Co Crate
+tile.medkit.name=Medical Supply Kit
+
+#Items
+item.mannco_key.name=Mann Co. Key
+
+#Creative Tab
+itemGroup.tf2tab=TeamFortress 2 Mod

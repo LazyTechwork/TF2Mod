@@ -1,0 +1,16 @@
+[
+{
+  "modid": "tf2mod",
+  "name": "Team Fortress 2 Mod",
+  "description": "Mod that adds things from TF2",
+  "version": "1.0.0",
+  "mcversion": "1.12.2",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["IvanSteklow"],
+  "credits": "IvanSteklow, HiLe Group for help with dev",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

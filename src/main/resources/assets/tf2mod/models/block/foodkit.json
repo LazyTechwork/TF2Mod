@@ -1,0 +1,8 @@
+{
+    "parent": "block/chorus_flower",
+    "textures": {
+        "texture": "tf2mod:blocks/foodkit_side",
+        "bottom": "tf2mod:blocks/kit_bottom",
+        "particle": "tf2mod:blocks/foodkit_side"
+    }
+}
