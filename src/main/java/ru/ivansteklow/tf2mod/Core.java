@@ -55,6 +55,7 @@ public class Core {
 		meta.version = References.VERSION;
 		meta.description = References.DESCRIPTION;
 		meta.credits = References.CREDITS;
+		meta.updateJSON = References.UPDATE_JSON;
 		ArrayList<String> authors = new ArrayList<String>();
 		authors.add("IvanSteklow");
 		meta.authorList = authors;

@@ -7,11 +7,13 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -77,9 +79,10 @@ public class BlockCrate extends BlockBase{
     @Override
     public IBlockState getStateFromMeta(int meta) {
     	EnumFacing enumFacing = EnumFacing.getFront(meta);
-    	if (enumFacing.getAxis() == EnumFacing.Axis.Y) {
+    	if (enumFacing.getAxis() == EnumFacing.Axis.Y || enumFacing == EnumFacing.UP)
     		enumFacing = EnumFacing.NORTH;
-    	}
+    	if(enumFacing == EnumFacing.DOWN)
+    		enumFacing = EnumFacing.SOUTH;
     	return this.getDefaultState().withProperty(FACING, enumFacing);
     }
     
@@ -88,4 +91,29 @@ public class BlockCrate extends BlockBase{
     {
         setDefaultState(state);
     }
+
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+    
+    @Override
+    public boolean isFullBlock(IBlockState state) {
+    	return false;
+    }
+    
+    public boolean onNeighborChangeInternal(World worldIn, BlockPos pos, IBlockState state){
+    	if(worldIn.getBlockState(pos.offset(EnumFacing.DOWN)).getBlock() == Blocks.AIR) {
+    		worldIn.setBlockState(pos.offset(EnumFacing.DOWN), state);
+        	worldIn.setBlockToAir(pos);
+        	return true;
+    	}
+    	return false;
+    }
+
 }
