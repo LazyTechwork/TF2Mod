@@ -32,7 +32,7 @@ public class BlockCrate extends BlockBase {
 	private ImmutableList<Item> list;
 
 	public BlockCrate(String name, ImmutableList<Item> itemList) {
-		super(Material.CLOTH, name, References.CREATIVE_TAB, 1F);
+		super(Material.CLOTH, name, References.CREATIVE_TAB, 1F, true);
 		setBlockUnbreakable();
 		list = itemList;
 	}

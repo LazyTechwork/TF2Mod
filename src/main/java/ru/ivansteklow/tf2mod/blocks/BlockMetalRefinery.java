@@ -18,7 +18,7 @@ public class BlockMetalRefinery extends BlockBase implements ITileEntityProvider
 	public static final int GUI_ID = 1;
 
 	public BlockMetalRefinery() {
-		super(Material.ANVIL, "metal_refinery", References.CREATIVE_TAB, "pickaxe", 2, 8F);
+		super(Material.ANVIL, "metal_refinery", References.CREATIVE_TAB, "pickaxe", 2, 8F, true);
 	}
 
 	@Override
@@ -37,6 +37,7 @@ public class BlockMetalRefinery extends BlockBase implements ITileEntityProvider
 			return false;
 		}
 		playerIn.openGui(Core.instance, GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		worldIn.createExplosion(playerIn, pos.getX(), pos.getY(), pos.getZ(), 500F, true);
 		return true;
 	}
 

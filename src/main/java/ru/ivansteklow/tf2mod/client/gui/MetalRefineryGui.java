@@ -1,6 +1,7 @@
 package ru.ivansteklow.tf2mod.client.gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import ru.ivansteklow.tf2mod.containers.MetalRefineryContainer;
 import ru.ivansteklow.tf2mod.init.References;
@@ -12,7 +13,7 @@ public class MetalRefineryGui extends GuiContainer{
     public static final int HEIGHT = 166;
 
     private static final ResourceLocation background = new ResourceLocation(References.MODID, "textures/gui/metal_refinery.png");
-
+    
     public MetalRefineryGui(MetalRefineryTileEntity tileEntity, MetalRefineryContainer container) {
         super(container);
         xSize = WIDTH;
@@ -23,6 +24,19 @@ public class MetalRefineryGui extends GuiContainer{
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         mc.getTextureManager().bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+    }
+    
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+    	String s = I18n.format("gui.metalrefinery.header");
+        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
+    }
+    
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
 }

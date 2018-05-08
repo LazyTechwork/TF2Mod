@@ -1,10 +1,25 @@
 #Blocks
 tile.foodkit.name=Food Supply Kit
-tile.mannco_case.name=Mann Co Crate
+tile.mannco_case.name=Mann Co. Crate
 tile.medkit.name=Medical Supply Kit
+tile.metal_refinery.name=Metal Refinery
 
 #Items
 item.mannco_key.name=Mann Co. Key
+item.refined_metal.name=Refined Metal
+item.reclaimed_metal.name=Reclaimed Metal
+item.scrap_metal.name=Scrap Metal
 
 #Creative Tab
 itemGroup.tf2tab=TeamFortress 2 Mod
+
+#GUI
+gui.metalrefinery.header=Metal Refinery
+
+#Tooltips
+tooltip.blocks.foodkit=Just get some awesome food!
+tooltip.blocks.mannco_case=Open it and get some scrap
+tooltip.blocks.medkit=Just a First-aid Kit
+tooltip.blocks.metal_refinery=Do awful things
+
+tooltip.items.mannco_key=You need it to open Mann Co. Crate. Buy it for 4.99$!

@@ -1,27 +1,12 @@
 package ru.ivansteklow.tf2mod.init;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.IRecipeFactory;
+
 public class CraftTweaker {
 	public static void init() {
-		registerShapelessRecipes();
-		registerShapedRecipes();
-		registerFurnaceRecipes();
-		registerCustomRecipes();
+		CraftingHelper.register(new ResourceLocation(References.MODID, "shapeless_recipes"), (IRecipeFactory) (context, json) -> CraftingHelper.getRecipe(json, context));
+		CraftingHelper.register(new ResourceLocation(References.MODID, "shaped_recipes"), (IRecipeFactory) (context, json) -> CraftingHelper.getRecipe(json, context));
 	}
-
-	public static void registerShapelessRecipes() {
-		/*GameRegistry.addShapelessRecipe(new ItemStack(Blocks.OBSIDIAN), Items.WATER_BUCKET, Items.WATER_BUCKET,
-				Items.LAVA_BUCKET);*/
-	}
-
-	public static void registerShapedRecipes() {
-		//GameRegistry.addShapedRecipe(new ItemStack(Blocks.CHEST, 4), "XXX", "X X", "XXX", 'X', Blocks.LOG);
-	}
-
-	public static void registerFurnaceRecipes() {
-		/*GameRegistry.addSmelting(new ItemStack(Blocks.SANDSTONE, 1, 0), new ItemStack(ModBlocks.blockRawSandbrick),
-				10.0F);*/
-	}
-
-	public static void registerCustomRecipes() {
-}
 }

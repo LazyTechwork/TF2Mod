@@ -6,14 +6,14 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import ru.ivansteklow.isdev.handlers.ItemHandler;
-import ru.ivansteklow.tf2mod.items.ItemKey;
-import ru.ivansteklow.tf2mod.items.ItemMetal;
+import ru.ivansteklow.tf2mod.items.ItemBase;
 
 public class ItemList {
 
-	public static Item mannco_key = new ItemKey("mannco_key", References.CREATIVE_TAB),
-			scrap_metal = new ItemMetal("scrap_metal"), reclaimed_metal = new ItemMetal("reclaimed_metal"),
-			refined_metal = new ItemMetal("refined_metal");
+	public static Item mannco_key = new ItemBase("mannco_key", References.CREATIVE_TAB, true),
+			scrap_metal = new ItemBase("scrap_metal", References.CREATIVE_TAB, false),
+			reclaimed_metal = new ItemBase("reclaimed_metal", References.CREATIVE_TAB, false),
+			refined_metal = new ItemBase("refined_metal", References.CREATIVE_TAB, false);
 
 	@Mod.EventBusSubscriber(modid = References.MODID)
 	public static class RegistrationHandler {

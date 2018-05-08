@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " R ",
+        "RHR",
+        " A "
+    ],
+    "key": {
+        "R": {
+            "item": "minecraft:redstone"
+        },
+        "A": {
+            "item": "minecraft:iron_pickaxe"
+        },
+        "H": {
+            "item": "minecraft:anvil"
+        }
+    },
+    "result": {
+        "item": "tf2mod:metal_refined",
+        "count": 1
+    }
+}
