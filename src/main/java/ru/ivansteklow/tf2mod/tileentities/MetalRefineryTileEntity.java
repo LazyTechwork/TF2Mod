@@ -1,6 +1,8 @@
 package ru.ivansteklow.tf2mod.tileentities;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -11,6 +13,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import ru.ivansteklow.tf2mod.config.ModConfig;
+import ru.ivansteklow.tf2mod.init.ItemList;
 import ru.ivansteklow.tf2mod.recipes.RefineryRecipes;
 
 public class MetalRefineryTileEntity extends TileEntity implements ITickable, ICapabilityProvider {
@@ -64,24 +67,18 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
         return super.getCapability(capability, facing);
     }
 
-	private void processItem() {
-		ItemStack input = this.itemStackHandler.getStackInSlot(0);
-		if (RefineryRecipes.instance().getResult(input) != null) {
-			if (this.itemStackHandler.getStackInSlot(1) == null && this.itemStackHandler.getStackInSlot(2) == null) {
-				ItemStack[] output = RefineryRecipes.instance().getResult(input);
-				this.itemStackHandler.setStackInSlot(1, output[0]);
-				this.itemStackHandler.setStackInSlot(2, output[1]);
-				this.itemStackHandler.setStackInSlot(0, null);
-			}
-		}
+	private void processItem(ItemStack output, ItemStack output2) {
+			this.itemStackHandler.setStackInSlot(1, output);
+			this.itemStackHandler.setStackInSlot(2, output2);
+			this.itemStackHandler.setStackInSlot(0, new ItemStack(Blocks.AIR));
 	}
 
 	@Override
 	public void update() {
 		ItemStack input = this.itemStackHandler.getStackInSlot(0);
-		if (RefineryRecipes.instance().getResult(input) != null) {
+		if (input.getItem() == Items.IRON_INGOT && input.getCount() == 2) {
 			if (time == METAL_REFINERY_WORKTIME) {
-				processItem();
+				processItem(new ItemStack(ItemList.scrap_metal), new ItemStack(ItemList.scrap_metal));
 			} else if (time < METAL_REFINERY_WORKTIME) {
 				time++;
 			}
