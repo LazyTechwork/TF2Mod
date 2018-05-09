@@ -1,9 +1,13 @@
 package ru.ivansteklow.tf2mod.config;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -16,32 +20,18 @@ public class ModConfig {
 
 	public static final String CATEGORY_NAME_BLOCKS = "blocks";
 
-	public static int machineCooldownBasic;
-	public static int machineCooldownAdvanced;
+	public static int metalRefineryWorkTime;
 
-	/**
-	 * Initialization config in Minecraft Add this method in fml pre
-	 * initialization event
-	 */
 	public static void preInit() {
 		File configFile = new File(Loader.instance().getConfigDir(), "TeamFortress2.cfg");
 		config = new Configuration(configFile);
 		syncFromFiles();
 	}
 
-	/**
-	 * Returns configuration instance
-	 * 
-	 * @return Configuration
-	 */
 	public static Configuration getConfig() {
 		return config;
 	}
 
-	/**
-	 * Initialization config in Minecraft Add this method on client side pre
-	 * initialization
-	 */
 	public static void clientPreInit() {
 		MinecraftForge.EVENT_BUS.register(new ConfigEventHandler());
 	}
@@ -62,29 +52,21 @@ public class ModConfig {
 		if (loadFromConfigFile)
 			config.load();
 
-		/*Property propertyMachineCooldownBasic = config.get(CATEGORY_NAME_BLOCKS, "machine_cooldown_basic", 100);
-		propertyMachineCooldownBasic.setLanguageKey("gui.config.blocks.machine_cooldown_basic.name");
-		propertyMachineCooldownBasic.setComment(I18n.format("gui.config.blocks.machine_cooldown_basic.comment"));
-		propertyMachineCooldownBasic.setMinValue(10);
-		propertyMachineCooldownBasic.setMaxValue(200);
-		Property propertyMachineCooldownAdvanced = config.get(CATEGORY_NAME_BLOCKS, "machine_cooldown_advanced", 50);
-		propertyMachineCooldownAdvanced.setLanguageKey("gui.config.blocks.machine_cooldown_advanced.name");
-		propertyMachineCooldownAdvanced.setComment(I18n.format("gui.config.blocks.machine_cooldown_advanced.comment"));
-		propertyMachineCooldownAdvanced.setMinValue(10);
-		propertyMachineCooldownAdvanced.setMaxValue(200);
+		Property propertyMetalRefineryWorkTime = config.get(CATEGORY_NAME_BLOCKS, "metal_refinery_worktime", 100);
+		propertyMetalRefineryWorkTime.setLanguageKey("gui.config.blocks.metal_refinery_worktime.name");
+		propertyMetalRefineryWorkTime.setComment(I18n.format("gui.config.blocks.metal_refinery_worktime.comment"));
+		propertyMetalRefineryWorkTime.setMinValue(50);
+		propertyMetalRefineryWorkTime.setMaxValue(500);
 
 		List<String> propertyOrderBlocks = new ArrayList<String>();
-		propertyOrderBlocks.add(propertyMachineCooldownBasic.getName());
-		propertyOrderBlocks.add(propertyMachineCooldownAdvanced.getName());
+		propertyOrderBlocks.add(propertyMetalRefineryWorkTime.getName());
 		config.setCategoryPropertyOrder(CATEGORY_NAME_BLOCKS, propertyOrderBlocks);
 
 		if (readFieldsFromConfig) {
-			machineCooldownBasic = propertyMachineCooldownBasic.getInt();
-			machineCooldownAdvanced = propertyMachineCooldownAdvanced.getInt();
+			metalRefineryWorkTime = propertyMetalRefineryWorkTime.getInt();
 		}
 
-		propertyMachineCooldownBasic.set(machineCooldownBasic);
-		propertyMachineCooldownAdvanced.set(machineCooldownAdvanced);*/
+		propertyMetalRefineryWorkTime.set(metalRefineryWorkTime);
 
 		if (config.hasChanged())
 			config.save();

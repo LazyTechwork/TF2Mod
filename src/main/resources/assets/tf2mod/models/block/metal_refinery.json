@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "north": "tf2mod:blocks/metal_refinery",
+		"east": "tf2mod:blocks/machine_casing",
+		"west": "tf2mod:blocks/machine_casing",
+		"south": "tf2mod:blocks/machine_casing",
+		"up": "tf2mod:blocks/machine_casing",
+		"down": "tf2mod:blocks/machine_casing",
+		"particle": "tf2mod:blocks/metal_refinery"
+    }
+}
