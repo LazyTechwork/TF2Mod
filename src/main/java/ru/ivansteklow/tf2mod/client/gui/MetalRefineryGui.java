@@ -50,8 +50,8 @@ public class MetalRefineryGui extends GuiContainer{
     
     @Override
     public void updateScreen() {
-    	this.time = te.time;
-    	this.maxTime = te.METAL_REFINERY_WORKTIME;
+    	this.time = te.getElapsedTime();
+    	this.maxTime = te.getMaxTime();
     }
 
 }

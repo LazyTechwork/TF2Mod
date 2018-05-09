@@ -39,4 +39,8 @@ public class RefineryRecipes {
 		return refineRecipesList.get(input);
 	}
 	
+	public boolean isHasRecipe(ItemStack input) {
+		return getResult(input)!=null;
+	}
+	
 }
