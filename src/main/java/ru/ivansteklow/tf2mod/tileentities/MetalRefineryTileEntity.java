@@ -76,16 +76,22 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 				&& (this.itemStackHandler.getStackInSlot(1).getCount() == 0
 						|| this.itemStackHandler.getStackInSlot(1).getCount() + recipe.output1.getCount() <= 64)
 				&& (this.itemStackHandler.getStackInSlot(2).getCount() == 0
-						|| this.itemStackHandler.getStackInSlot(2).getCount() + recipe.output2.getCount() <= 64) && (this.itemStackHandler.getStackInSlot(0).getCount() - recipe.input.getCount() >= 0)) {
-				this.itemStackHandler.setStackInSlot(1, new ItemStack(recipe.output1.getItem(),
-						this.itemStackHandler.getStackInSlot(1).getCount() + recipe.output1.getCount()));
-				if (rand.nextInt(100) <= chance)
-					this.itemStackHandler.setStackInSlot(2, new ItemStack(recipe.output2.getItem(),
-							this.itemStackHandler.getStackInSlot(2).getCount() + recipe.output2.getCount()));
-				this.itemStackHandler.setStackInSlot(0, new ItemStack(this.itemStackHandler.getStackInSlot(0).getItem(),
-						this.itemStackHandler.getStackInSlot(0).getCount() - recipe.input.getCount()));
-			}
+						|| this.itemStackHandler.getStackInSlot(2).getCount() + recipe.output2.getCount() <= 64)
+				&& (this.itemStackHandler.getStackInSlot(0).getCount() - recipe.input.getCount() >= 0)) {
+
+			ItemStack output = new ItemStack(recipe.output1.getItem(),
+					this.itemStackHandler.getStackInSlot(1).getCount() + recipe.output1.getCount());
+			this.itemStackHandler.setStackInSlot(1, ItemStack.EMPTY);
+			this.itemStackHandler.setStackInSlot(1, output);
+			output = new ItemStack(recipe.output2.getItem(),
+					this.itemStackHandler.getStackInSlot(2).getCount() + recipe.output2.getCount());
+			if (rand.nextInt(100) <= chance)
+				this.itemStackHandler.setStackInSlot(2, output);
+			this.itemStackHandler.setStackInSlot(0, new ItemStack(this.itemStackHandler.getStackInSlot(0).getItem(),
+					this.itemStackHandler.getStackInSlot(0).getCount() - recipe.input.getCount()));
+
 		}
+	}
 
 	@Override
 	public void update() {
@@ -93,8 +99,8 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 		if (RefineryRecipes.instance().getResult(input) != null) {
 			RefineryRecipe recipe = RefineryRecipes.instance().getResult(input);
 			if (time == METAL_REFINERY_WORKTIME) {
-						processItem(recipe, 5);
-						time = 0;
+				processItem(recipe, 5);
+				time = 0;
 			} else if (time < METAL_REFINERY_WORKTIME) {
 				time++;
 			}

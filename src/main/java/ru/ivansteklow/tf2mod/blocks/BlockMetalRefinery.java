@@ -28,19 +28,19 @@ public class BlockMetalRefinery extends BlockBase implements ITileEntityProvider
 	public static final int GUI_ID = 1;
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
-	
 
 	public BlockMetalRefinery() {
 		super(Material.ANVIL, "metal_refinery", References.CREATIVE_TAB, "pickaxe", 2, 8F, true);
 		setSoundType(SoundType.ANVIL);
-		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ACTIVATED, false));
+		setDefaultState(
+				this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ACTIVATED, false));
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new MetalRefineryTileEntity();
 	}
-	
+
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(BlockList.metal_refinery);
@@ -59,7 +59,7 @@ public class BlockMetalRefinery extends BlockBase implements ITileEntityProvider
 		playerIn.openGui(Core.instance, GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
-	
+
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] { FACING, ACTIVATED });
@@ -84,13 +84,16 @@ public class BlockMetalRefinery extends BlockBase implements ITileEntityProvider
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		setDefaultState(state);
 	}
-	
+
 	@Override
 	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
 		MetalRefineryTileEntity te = (MetalRefineryTileEntity) worldIn.getTileEntity(pos);
-		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), te.itemStackHandler.getStackInSlot(0)));
-		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), te.itemStackHandler.getStackInSlot(1)));
-		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), te.itemStackHandler.getStackInSlot(2)));
+		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(),
+				te.itemStackHandler.getStackInSlot(0)));
+		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(),
+				te.itemStackHandler.getStackInSlot(1)));
+		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(),
+				te.itemStackHandler.getStackInSlot(2)));
 	}
 
 }
