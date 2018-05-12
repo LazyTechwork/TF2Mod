@@ -15,7 +15,8 @@
 			"down": {"x": 90}
 		},
 		"activated": {
-			"true": { "model": "tf2mod:metal_refinery_on" }
+			"true": { "model": "tf2mod:metal_refinery" },
+			"false": { "model": "tf2mod:metal_refinery" }
 		}
 	}
 }

@@ -10,6 +10,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -82,6 +83,14 @@ public class BlockMetalRefinery extends BlockBase implements ITileEntityProvider
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		setDefaultState(state);
+	}
+	
+	@Override
+	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+		MetalRefineryTileEntity te = (MetalRefineryTileEntity) worldIn.getTileEntity(pos);
+		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), te.itemStackHandler.getStackInSlot(0)));
+		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), te.itemStackHandler.getStackInSlot(1)));
+		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(), te.itemStackHandler.getStackInSlot(2)));
 	}
 
 }

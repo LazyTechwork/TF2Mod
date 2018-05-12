@@ -7,40 +7,52 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Maps;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import ru.ivansteklow.tf2mod.init.ItemList;
 
 public class RefineryRecipes {
 
-	private Map<ItemStack, ItemStack[]> refineRecipesList = Maps.<ItemStack, ItemStack[]>newHashMap();
+	private Map<Item, RefineryRecipe> refineRecipesList = Maps.<Item, RefineryRecipe>newHashMap();
 	private static final RefineryRecipes INSTANCE = new RefineryRecipes();
-	
+
 	public static RefineryRecipes instance() {
 		return INSTANCE;
 	}
-	
+
 	public RefineryRecipes() {
-		addRecipeToList(new ItemStack(Items.IRON_INGOT, 2), new ItemStack(ItemList.scrap_metal, 1), new ItemStack(Items.IRON_INGOT, 1));
-		addRecipeToList(new ItemStack(ItemList.scrap_metal, 2), new ItemStack(ItemList.reclaimed_metal, 1), new ItemStack(ItemList.scrap_metal, 1));
-		addRecipeToList(new ItemStack(ItemList.reclaimed_metal, 2), new ItemStack(ItemList.refined_metal, 1), new ItemStack(ItemList.scrap_metal, 1));
+		addRecipeToList(new ItemStack(Items.IRON_INGOT, 1), new ItemStack(ItemList.scrap_metal, 2),
+				new ItemStack(Items.IRON_INGOT, 1));
+		addRecipeToList(new ItemStack(ItemList.scrap_metal, 3), new ItemStack(ItemList.reclaimed_metal, 1),
+				new ItemStack(ItemList.scrap_metal, 1));
+		addRecipeToList(new ItemStack(ItemList.reclaimed_metal, 3), new ItemStack(ItemList.refined_metal, 1),
+				new ItemStack(ItemList.scrap_metal, 1));
+		addRecipeToList(new ItemStack(ItemList.refined_metal, 28), new ItemStack(ItemList.mannco_key, 1),
+				new ItemStack(ItemList.scrap_metal, 1));
 	}
-	
+
 	public void addRecipeToList(ItemStack input, ItemStack output1, ItemStack output2) {
-		ItemStack[] output = { output1, output2 };
-		refineRecipesList.put(input, output);
+		refineRecipesList.put(input.getItem(), new RefineryRecipe(input, output1, output2));
 	}
-	
-	public void addRecipeToList(ItemStack input, ItemStack output) {
-		addRecipeToList(input, output, null);
-	}
-	
+
 	@Nullable
-	public ItemStack[] getResult(ItemStack input) {
-		return refineRecipesList.get(input);
+	public RefineryRecipe getResult(ItemStack input) {
+		if (refineRecipesList.get(input.getItem()) != null
+				&& refineRecipesList.get(input.getItem()).input.getCount() <= input.getCount())
+			return refineRecipesList.get((input.getItem()));
+		else
+			return null;
 	}
-	
-	public boolean isHasRecipe(ItemStack input) {
-		return getResult(input)!=null;
+
+	public class RefineryRecipe {
+
+		public ItemStack input, output1, output2;
+
+		public RefineryRecipe(ItemStack input, ItemStack output1, ItemStack output2) {
+			this.input = input;
+			this.output1 = output1;
+			this.output2 = output2;
+		}
 	}
-	
+
 }

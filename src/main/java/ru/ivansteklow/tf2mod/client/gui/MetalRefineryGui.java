@@ -3,7 +3,6 @@ package ru.ivansteklow.tf2mod.client.gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-import ru.ivansteklow.tf2mod.Core;
 import ru.ivansteklow.tf2mod.client.gui.ProgressBar.ProgressBarDirection;
 import ru.ivansteklow.tf2mod.containers.MetalRefineryContainer;
 import ru.ivansteklow.tf2mod.init.References;
@@ -53,7 +52,6 @@ public class MetalRefineryGui extends GuiContainer{
     public void updateScreen() {
     	this.time = te.getElapsedTime();
     	this.maxTime = te.getMaxTime();
-    	Core.logger.info(time);
     }
 
 }
