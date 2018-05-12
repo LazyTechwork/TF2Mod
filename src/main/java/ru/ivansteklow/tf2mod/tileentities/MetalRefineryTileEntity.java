@@ -14,6 +14,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import ru.ivansteklow.tf2mod.Core;
+import ru.ivansteklow.tf2mod.blocks.BlockMetalRefinery;
 import ru.ivansteklow.tf2mod.config.ModConfig;
 import ru.ivansteklow.tf2mod.recipes.RefineryRecipes;
 import ru.ivansteklow.tf2mod.recipes.RefineryRecipes.RefineryRecipe;
@@ -71,28 +73,27 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 	}
 
 	private void processItem(RefineryRecipe recipe, int chance) {
-		if ((this.itemStackHandler.getStackInSlot(1).getItem().equals(recipe.output1.getItem())
-				|| this.itemStackHandler.getStackInSlot(1).getCount() == 0)
-				&& (this.itemStackHandler.getStackInSlot(2).getItem().equals(recipe.output2.getItem())
-						|| this.itemStackHandler.getStackInSlot(2).isEmpty())
-				&& (this.itemStackHandler.getStackInSlot(1).getCount() == 0
-						|| this.itemStackHandler.getStackInSlot(1).getCount() + recipe.output1.getCount() <= 64)
-				&& (this.itemStackHandler.getStackInSlot(2).getCount() == 0
-						|| this.itemStackHandler.getStackInSlot(2).getCount() + recipe.output2.getCount() <= 64)
-				&& (this.itemStackHandler.getStackInSlot(0).getCount() - recipe.input.getCount() >= 0)) {
-
-			ItemStack output = new ItemStack(recipe.output1.getItem(),
-					this.itemStackHandler.getStackInSlot(1).getCount() + recipe.output1.getCount());
-			this.itemStackHandler.setStackInSlot(1, ItemStack.EMPTY);
-			this.itemStackHandler.setStackInSlot(1, output);
-			output = new ItemStack(recipe.output2.getItem(),
-					this.itemStackHandler.getStackInSlot(2).getCount() + recipe.output2.getCount());
-			if (rand.nextInt(100) <= chance)
-				this.itemStackHandler.setStackInSlot(2, output);
-			this.itemStackHandler.setStackInSlot(0, new ItemStack(this.itemStackHandler.getStackInSlot(0).getItem(),
-					this.itemStackHandler.getStackInSlot(0).getCount() - recipe.input.getCount()));
-
-		}
+		if (!this.getWorld().isRemote)
+			if ((this.itemStackHandler.getStackInSlot(1).getItem().equals(recipe.output1.getItem())
+					|| this.itemStackHandler.getStackInSlot(1).getCount() == 0)
+					&& (this.itemStackHandler.getStackInSlot(2).getItem().equals(recipe.output2.getItem())
+							|| this.itemStackHandler.getStackInSlot(2).isEmpty())
+					&& (this.itemStackHandler.getStackInSlot(1).getCount() == 0
+							|| this.itemStackHandler.getStackInSlot(1).getCount() + recipe.output1.getCount() <= 64)
+					&& (this.itemStackHandler.getStackInSlot(2).getCount() == 0
+							|| this.itemStackHandler.getStackInSlot(2).getCount() + recipe.output2.getCount() <= 64)
+					&& (this.itemStackHandler.getStackInSlot(0).getCount() - recipe.input.getCount() >= 0)) {
+				ItemStack output = new ItemStack(recipe.output1.getItem(),
+						this.itemStackHandler.getStackInSlot(1).getCount() + recipe.output1.getCount());
+				this.itemStackHandler.setStackInSlot(1, ItemStack.EMPTY);
+				this.itemStackHandler.setStackInSlot(1, output);
+				output = new ItemStack(recipe.output2.getItem(),
+						this.itemStackHandler.getStackInSlot(2).getCount() + recipe.output2.getCount());
+				if (rand.nextInt(100) <= chance)
+					this.itemStackHandler.setStackInSlot(2, output);
+				this.itemStackHandler.setStackInSlot(0, new ItemStack(this.itemStackHandler.getStackInSlot(0).getItem(),
+						this.itemStackHandler.getStackInSlot(0).getCount() - recipe.input.getCount()));
+			}
 	}
 
 	@Override
@@ -101,13 +102,16 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 		if (RefineryRecipes.instance().getResult(input) != null) {
 			RefineryRecipe recipe = RefineryRecipes.instance().getResult(input);
 			if (time == METAL_REFINERY_WORKTIME) {
-				processItem(recipe, 5);
 				time = 0;
+				processItem(recipe, 5);
+				((BlockMetalRefinery) this.getWorld().getBlockState(this.getPos()).getBlock()).setBlockActivated(true);
 			} else if (time < METAL_REFINERY_WORKTIME) {
 				time++;
+				((BlockMetalRefinery) this.getWorld().getBlockState(this.getPos()).getBlock()).setBlockActivated(true);
 			}
 		} else {
 			time = 0;
+			((BlockMetalRefinery) this.getWorld().getBlockState(this.getPos()).getBlock()).setBlockActivated(false);
 		}
 	}
 
@@ -118,7 +122,7 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 	public int getMaxTime() {
 		return METAL_REFINERY_WORKTIME;
 	}
-	
+
 	public void dropItemsOnDestroy(World worldIn) {
 		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(),
 				this.itemStackHandler.getStackInSlot(0)));

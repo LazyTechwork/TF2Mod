@@ -59,15 +59,9 @@ public class MetalRefineryContainer extends Container {
 			previous = current.copy();
 
 			if (fromSlot < handler.getSlots()) {
-				// From the block breaker inventory to player's inventory
 				if (!this.mergeItemStack(current, handler.getSlots(), handler.getSlots() + 36, true))
 					return ItemStack.EMPTY;
 			} else {
-				// From the player's inventory to block breaker's inventory
-				if (current.getItem() == Items.ENCHANTED_BOOK) {
-					if (!this.mergeItemStack(current, 9, handler.getSlots(), false))
-						return ItemStack.EMPTY;
-				}
 				if (!this.mergeItemStack(current, 0, handler.getSlots(), false))
 					return ItemStack.EMPTY;
 			}
