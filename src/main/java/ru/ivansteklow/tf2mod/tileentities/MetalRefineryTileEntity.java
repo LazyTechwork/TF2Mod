@@ -2,12 +2,14 @@ package ru.ivansteklow.tf2mod.tileentities;
 
 import java.util.Random;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -115,6 +117,15 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 
 	public int getMaxTime() {
 		return METAL_REFINERY_WORKTIME;
+	}
+	
+	public void dropItemsOnDestroy(World worldIn) {
+		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(),
+				this.itemStackHandler.getStackInSlot(0)));
+		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(),
+				this.itemStackHandler.getStackInSlot(1)));
+		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(),
+				this.itemStackHandler.getStackInSlot(2)));
 	}
 
 }
