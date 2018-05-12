@@ -14,7 +14,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import ru.ivansteklow.tf2mod.Core;
 import ru.ivansteklow.tf2mod.blocks.BlockMetalRefinery;
 import ru.ivansteklow.tf2mod.config.ModConfig;
 import ru.ivansteklow.tf2mod.recipes.RefineryRecipes;

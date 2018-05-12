@@ -86,7 +86,7 @@ public class BlockMetalRefinery extends BlockBase implements ITileEntityProvider
 
 	@Override
 	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
-		((MetalRefineryTileEntity) worldIn.getTileEntity(pos)).dropItemsOnDestroy(worldIn);
+		super.onBlockDestroyedByPlayer(worldIn, pos, state);
 	}
 	
 	public void setBlockActivated(boolean value) {
