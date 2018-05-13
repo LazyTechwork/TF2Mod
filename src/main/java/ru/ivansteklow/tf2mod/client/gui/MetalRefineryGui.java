@@ -48,7 +48,7 @@ public class MetalRefineryGui extends GuiContainer {
 		if (actualMouseX >= 71 && actualMouseX <= 93 && actualMouseY >= 34 && actualMouseY <= 47) {
 			List<String> text = new ArrayList<String>();
 			text.add(TextFormatting.YELLOW + I18n.format("gui.metalrefinery.time_remain"));
-			int timeInSec = this.time / 20;
+			int timeInSec = (this.maxTime - this.time) / 20;
 			text.add(TextFormatting.YELLOW + String.valueOf(timeInSec));
 			this.drawHoveringText(text, actualMouseX, actualMouseY);
 		}
