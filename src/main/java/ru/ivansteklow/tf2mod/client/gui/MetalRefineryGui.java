@@ -5,8 +5,10 @@ import java.util.List;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import ru.ivansteklow.tf2mod.Core;
 import ru.ivansteklow.tf2mod.client.gui.ProgressBar.ProgressBarDirection;
 import ru.ivansteklow.tf2mod.containers.MetalRefineryContainer;
 import ru.ivansteklow.tf2mod.init.References;
@@ -48,8 +50,7 @@ public class MetalRefineryGui extends GuiContainer {
 		if (actualMouseX >= 71 && actualMouseX <= 93 && actualMouseY >= 34 && actualMouseY <= 47) {
 			List<String> text = new ArrayList<String>();
 			text.add(TextFormatting.YELLOW + I18n.format("gui.metalrefinery.time_remain"));
-			int timeInSec = (this.maxTime - this.time) / 20;
-			text.add(TextFormatting.YELLOW + String.valueOf(timeInSec));
+			text.add(TextFormatting.YELLOW + Integer.toString(this.time));
 			this.drawHoveringText(text, actualMouseX, actualMouseY);
 		}
 	}
@@ -62,8 +63,12 @@ public class MetalRefineryGui extends GuiContainer {
 
 	@Override
 	public void updateScreen() {
-		this.time = this.te.getElapsedTime();
-		this.maxTime = this.te.getMaxTime();
+		NBTTagCompound compound = new NBTTagCompound();
+		compound = this.te.writeToNBT(compound);
+		this.time = compound.getInteger("time");
+		this.maxTime = compound.getInteger("maxTime");
+		Core.logger.info(compound);
+		super.updateScreen();
 	}
 
 }

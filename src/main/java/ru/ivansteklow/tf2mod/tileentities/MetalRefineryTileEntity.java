@@ -37,16 +37,17 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 		if (compound.hasKey("items")) {
 			this.itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
 		}
-		if (compound.hasKey("this.time")) {
-			this.time = compound.getInteger("this.time");
+		if (compound.hasKey("time")) {
+			this.time = compound.getInteger("time");
 		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
+		compound.setInteger("time", this.time);
+		compound.setInteger("maxTime", METAL_REFINERY_WORKTIME);
 		compound.setTag("items", this.itemStackHandler.serializeNBT());
-		compound.setInteger("this.time", this.time);
 		return compound;
 	}
 
