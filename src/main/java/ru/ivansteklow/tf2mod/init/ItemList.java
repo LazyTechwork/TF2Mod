@@ -10,10 +10,10 @@ import ru.ivansteklow.tf2mod.items.ItemBase;
 
 public class ItemList {
 
-	public static Item mannco_key = new ItemBase("mannco_key", References.CREATIVE_TAB, true),
-			scrap_metal = new ItemBase("scrap_metal", References.CREATIVE_TAB, false),
-			reclaimed_metal = new ItemBase("reclaimed_metal", References.CREATIVE_TAB, false),
-			refined_metal = new ItemBase("refined_metal", References.CREATIVE_TAB, false);
+	public static Item mannco_key = new ItemBase("mannco_key", References.CREATIVE_TAB, QualityList.QUALITY_UNIQUE, true),
+			scrap_metal = new ItemBase("scrap_metal", References.CREATIVE_TAB, QualityList.QUALITY_NORMAL, false),
+			reclaimed_metal = new ItemBase("reclaimed_metal", References.CREATIVE_TAB, QualityList.QUALITY_NORMAL, false),
+			refined_metal = new ItemBase("refined_metal", References.CREATIVE_TAB, QualityList.QUALITY_NORMAL, false);
 
 	@Mod.EventBusSubscriber(modid = References.MODID)
 	public static class RegistrationHandler {

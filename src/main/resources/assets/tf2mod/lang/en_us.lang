@@ -15,6 +15,7 @@ itemGroup.tf2tab=TeamFortress 2 Mod
 
 #GUI
 gui.metalrefinery.header=Metal Refinery
+gui.metalrefinery.time_remain=Time Remaining:
 
 #Tooltips
 tooltip.blocks.foodkit=Just get some awesome food!

@@ -1,8 +1,12 @@
 package ru.ivansteklow.tf2mod.client.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import ru.ivansteklow.tf2mod.client.gui.ProgressBar.ProgressBarDirection;
 import ru.ivansteklow.tf2mod.containers.MetalRefineryContainer;
 import ru.ivansteklow.tf2mod.init.References;
@@ -39,6 +43,15 @@ public class MetalRefineryGui extends GuiContainer {
 		this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
 		this.progressBar.setMin(time).setMax(maxTime);
 		this.progressBar.draw(mc);
+		int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
+		int actualMouseY = mouseY - ((this.height - this.ySize) / 2);
+		if (actualMouseX >= 71 && actualMouseX <= 93 && actualMouseY >= 34 && actualMouseY <= 47) {
+			List<String> text = new ArrayList<String>();
+			text.add(TextFormatting.YELLOW + I18n.format("gui.metalrefinery.time_remain"));
+			int timeInSec = this.time / 20;
+			text.add(TextFormatting.YELLOW + String.valueOf(timeInSec));
+			this.drawHoveringText(text, actualMouseX, actualMouseY);
+		}
 	}
 
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -49,8 +62,8 @@ public class MetalRefineryGui extends GuiContainer {
 
 	@Override
 	public void updateScreen() {
-		this.time = te.getElapsedTime();
-		this.maxTime = te.getMaxTime();
+		this.time = this.te.getElapsedTime();
+		this.maxTime = this.te.getMaxTime();
 	}
 
 }

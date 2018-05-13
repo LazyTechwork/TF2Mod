@@ -2,14 +2,12 @@ package ru.ivansteklow.tf2mod.tileentities;
 
 import java.util.Random;
 
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -23,7 +21,8 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 
 	public static final int SIZE = 3;
 	public static final int METAL_REFINERY_WORKTIME = ModConfig.metalRefineryWorkTime;
-	public static int time = 0;
+	public int time = 0;
+	public boolean isActive = false;
 	private Random rand = new Random();
 
 	public ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
@@ -36,18 +35,18 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		if (compound.hasKey("items")) {
-			itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
+			this.itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
 		}
-		if (compound.hasKey("time")) {
-			time = compound.getInteger("time");
+		if (compound.hasKey("this.time")) {
+			this.time = compound.getInteger("this.time");
 		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		compound.setTag("items", itemStackHandler.serializeNBT());
-		compound.setInteger("time", time);
+		compound.setTag("items", this.itemStackHandler.serializeNBT());
+		compound.setInteger("this.time", this.time);
 		return compound;
 	}
 
@@ -72,63 +71,58 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 	}
 
 	private void processItem(RefineryRecipe recipe, int chance) {
-		if (!this.getWorld().isRemote)
-			if ((this.itemStackHandler.getStackInSlot(1).getItem().equals(recipe.output1.getItem())
-					|| this.itemStackHandler.getStackInSlot(1).getCount() == 0)
-					&& (this.itemStackHandler.getStackInSlot(2).getItem().equals(recipe.output2.getItem())
-							|| this.itemStackHandler.getStackInSlot(2).isEmpty())
-					&& (this.itemStackHandler.getStackInSlot(1).getCount() == 0
-							|| this.itemStackHandler.getStackInSlot(1).getCount() + recipe.output1.getCount() <= 64)
-					&& (this.itemStackHandler.getStackInSlot(2).getCount() == 0
-							|| this.itemStackHandler.getStackInSlot(2).getCount() + recipe.output2.getCount() <= 64)
-					&& (this.itemStackHandler.getStackInSlot(0).getCount() - recipe.input.getCount() >= 0)) {
-				ItemStack output = new ItemStack(recipe.output1.getItem(),
-						this.itemStackHandler.getStackInSlot(1).getCount() + recipe.output1.getCount());
-				this.itemStackHandler.setStackInSlot(1, ItemStack.EMPTY);
-				this.itemStackHandler.setStackInSlot(1, output);
-				output = new ItemStack(recipe.output2.getItem(),
-						this.itemStackHandler.getStackInSlot(2).getCount() + recipe.output2.getCount());
-				if (rand.nextInt(100) <= chance)
-					this.itemStackHandler.setStackInSlot(2, output);
-				this.itemStackHandler.setStackInSlot(0, new ItemStack(this.itemStackHandler.getStackInSlot(0).getItem(),
-						this.itemStackHandler.getStackInSlot(0).getCount() - recipe.input.getCount()));
-			}
+		ItemStack output = new ItemStack(recipe.output1.getItem(),
+				this.itemStackHandler.getStackInSlot(1).getCount() + recipe.output1.getCount());
+		this.itemStackHandler.setStackInSlot(1, ItemStack.EMPTY);
+		this.itemStackHandler.setStackInSlot(1, output);
+		output = new ItemStack(recipe.output2.getItem(),
+				this.itemStackHandler.getStackInSlot(2).getCount() + recipe.output2.getCount());
+		if (rand.nextInt(100) <= chance)
+			this.itemStackHandler.setStackInSlot(2, output);
+		this.itemStackHandler.setStackInSlot(0, new ItemStack(this.itemStackHandler.getStackInSlot(0).getItem(),
+				this.itemStackHandler.getStackInSlot(0).getCount() - recipe.input.getCount()));
 	}
 
 	@Override
 	public void update() {
-		ItemStack input = this.itemStackHandler.getStackInSlot(0);
-		if (RefineryRecipes.instance().getResult(input) != null) {
-			RefineryRecipe recipe = RefineryRecipes.instance().getResult(input);
-			if (time == METAL_REFINERY_WORKTIME) {
-				time = 0;
-				processItem(recipe, 5);
-				((BlockMetalRefinery) this.getWorld().getBlockState(this.getPos()).getBlock()).setBlockActivated(true);
-			} else if (time < METAL_REFINERY_WORKTIME) {
-				time++;
-				((BlockMetalRefinery) this.getWorld().getBlockState(this.getPos()).getBlock()).setBlockActivated(true);
+		if (!this.world.isRemote) {
+			ItemStack input = this.itemStackHandler.getStackInSlot(0);
+			if (RefineryRecipes.instance().getResult(input) != null) {
+				RefineryRecipe recipe = RefineryRecipes.instance().getResult(input);
+				if (this.time == METAL_REFINERY_WORKTIME) {
+					if ((this.itemStackHandler.getStackInSlot(1).getItem().equals(recipe.output1.getItem())
+							|| this.itemStackHandler.getStackInSlot(1).getCount() == 0)
+							&& (this.itemStackHandler.getStackInSlot(2).getItem().equals(recipe.output2.getItem())
+									|| this.itemStackHandler.getStackInSlot(2).isEmpty())
+							&& (this.itemStackHandler.getStackInSlot(1).getCount() == 0
+									|| this.itemStackHandler.getStackInSlot(1).getCount()
+											+ recipe.output1.getCount() <= 64)
+							&& (this.itemStackHandler.getStackInSlot(2).getCount() == 0
+									|| this.itemStackHandler.getStackInSlot(2).getCount()
+											+ recipe.output2.getCount() <= 64)
+							&& (this.itemStackHandler.getStackInSlot(0).getCount() - recipe.input.getCount() >= 0)) {
+						processItem(recipe, 5);
+						this.time = 0;
+						this.isActive = true;
+					}
+				} else if (this.time < METAL_REFINERY_WORKTIME) {
+					this.time++;
+					this.isActive = true;
+				}
+			} else {
+				this.time = 0;
+				this.isActive = false;
 			}
-		} else {
-			time = 0;
-			((BlockMetalRefinery) this.getWorld().getBlockState(this.getPos()).getBlock()).setBlockActivated(false);
+			((BlockMetalRefinery) this.getWorld().getBlockState(this.getPos()).getBlock()).setBlockActivated(isActive);
 		}
 	}
 
 	public int getElapsedTime() {
-		return time;
+		return this.time;
 	}
 
 	public int getMaxTime() {
 		return METAL_REFINERY_WORKTIME;
-	}
-
-	public void dropItemsOnDestroy(World worldIn) {
-		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(),
-				this.itemStackHandler.getStackInSlot(0)));
-		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(),
-				this.itemStackHandler.getStackInSlot(1)));
-		worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY() + 0.5D, pos.getZ(),
-				this.itemStackHandler.getStackInSlot(2)));
 	}
 
 }

@@ -10,8 +10,11 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -19,7 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.ivansteklow.tf2mod.Core;
 import ru.ivansteklow.tf2mod.init.BlockList;
-import ru.ivansteklow.tf2mod.init.References;
+import ru.ivansteklow.tf2mod.init.QualityList;
 import ru.ivansteklow.tf2mod.tileentities.MetalRefineryTileEntity;
 
 public class BlockMetalRefinery extends BlockBase implements ITileEntityProvider {
@@ -29,8 +32,9 @@ public class BlockMetalRefinery extends BlockBase implements ITileEntityProvider
 	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 
 	public BlockMetalRefinery() {
-		super(Material.ANVIL, "metal_refinery", References.CREATIVE_TAB, "pickaxe", 2, 8F, true);
+		super(Material.ANVIL, "metal_refinery", QualityList.QUALITY_NORMAL, 8F, true);
 		setSoundType(SoundType.ANVIL);
+		setHarvestLevel("pickaxe", 2);
 		setDefaultState(
 				this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ACTIVATED, false));
 	}
@@ -60,6 +64,13 @@ public class BlockMetalRefinery extends BlockBase implements ITileEntityProvider
 	}
 
 	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
+			ItemStack stack) {
+		worldIn.setBlockState(pos, state.withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer)));
+		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+	}
+
+	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] { FACING, ACTIVATED });
 	}
@@ -84,11 +95,21 @@ public class BlockMetalRefinery extends BlockBase implements ITileEntityProvider
 		setDefaultState(state);
 	}
 
-	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
-		super.onBlockDestroyedByPlayer(worldIn, pos, state);
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		TileEntity tileentity = worldIn.getTileEntity(pos);
+
+		if (tileentity instanceof MetalRefineryTileEntity) {
+			tileentity = (MetalRefineryTileEntity) worldIn.getTileEntity(pos);
+			worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
+					((MetalRefineryTileEntity) tileentity).itemStackHandler.getStackInSlot(0)));
+			worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
+					((MetalRefineryTileEntity) tileentity).itemStackHandler.getStackInSlot(1)));
+			worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
+					((MetalRefineryTileEntity) tileentity).itemStackHandler.getStackInSlot(2)));
+		}
+		super.breakBlock(worldIn, pos, state);
 	}
-	
+
 	public void setBlockActivated(boolean value) {
 		this.getDefaultState().withProperty(ACTIVATED, value);
 	}

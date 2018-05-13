@@ -23,7 +23,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.ivansteklow.tf2mod.init.ItemList;
-import ru.ivansteklow.tf2mod.init.References;
+import ru.ivansteklow.tf2mod.init.QualityList;
 
 public class BlockCrate extends BlockBase {
 
@@ -32,7 +32,7 @@ public class BlockCrate extends BlockBase {
 	private ImmutableList<Item> list;
 
 	public BlockCrate(String name, ImmutableList<Item> itemList) {
-		super(Material.CLOTH, name, References.CREATIVE_TAB, 1F, true);
+		super(Material.CLOTH, name, QualityList.QUALITY_UNIQUE, 1F, true);
 		setBlockUnbreakable();
 		list = itemList;
 	}

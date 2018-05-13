@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import ru.ivansteklow.tf2mod.enums.PickupTypeEnum;
-import ru.ivansteklow.tf2mod.init.References;
+import ru.ivansteklow.tf2mod.init.QualityList;
 
 public class BlockPickup extends BlockBase {
 
@@ -23,7 +23,7 @@ public class BlockPickup extends BlockBase {
 	private float value = 2F;
 
 	public BlockPickup(String name, PickupTypeEnum type, float value) {
-		super(Material.CLOTH, name, References.CREATIVE_TAB, 1F, true);
+		super(Material.CLOTH, name, QualityList.QUALITY_NORMAL, 1F, false, true);
 		setBlockUnbreakable();
 		this.type = type;
 		this.value = value;
