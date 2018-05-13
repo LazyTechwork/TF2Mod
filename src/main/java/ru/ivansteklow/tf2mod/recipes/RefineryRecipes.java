@@ -9,11 +9,12 @@ import com.google.common.collect.Maps;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import ru.ivansteklow.tf2mod.init.ItemList;
 
 public class RefineryRecipes {
 
-	private Map<Item, RefineryRecipe> refineRecipesList = Maps.<Item, RefineryRecipe>newHashMap();
+	public Map<Item, RefineryRecipe> refineRecipesList = Maps.<Item, RefineryRecipe>newHashMap();
 	private static final RefineryRecipes INSTANCE = new RefineryRecipes();
 
 	public static RefineryRecipes instance() {
@@ -42,6 +43,14 @@ public class RefineryRecipes {
 			return refineRecipesList.get((input.getItem()));
 		else
 			return null;
+	}
+	
+	public NonNullList<RefineryRecipe> getRefineryRecipesList() {
+		NonNullList<RefineryRecipe> recipes = NonNullList.create();
+		for(Map.Entry<Item, RefineryRecipe> entry : refineRecipesList.entrySet()) {
+			recipes.add(entry.getValue());
+		}
+		return recipes;
 	}
 
 	public class RefineryRecipe {
