@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,8 @@ public class RefineryRecipes {
 	}
 
 	public RefineryRecipes() {
+		addRecipeToList(new ItemStack(Blocks.IRON_ORE, 1), new ItemStack(Items.IRON_INGOT, 1),
+				new ItemStack(Items.IRON_INGOT, 1));
 		addRecipeToList(new ItemStack(Items.IRON_INGOT, 1), new ItemStack(ItemList.scrap_metal, 2),
 				new ItemStack(Items.IRON_INGOT, 1));
 		addRecipeToList(new ItemStack(ItemList.scrap_metal, 3), new ItemStack(ItemList.reclaimed_metal, 1),

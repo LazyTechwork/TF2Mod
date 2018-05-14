@@ -3,6 +3,7 @@ package ru.ivansteklow.tf2mod.tileentities;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -14,6 +15,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import ru.ivansteklow.tf2mod.blocks.BlockMetalRefinery;
 import ru.ivansteklow.tf2mod.config.ModConfig;
+import ru.ivansteklow.tf2mod.network.ModNetworkWrapper;
+import ru.ivansteklow.tf2mod.network.PacketMetalRefinery;
 import ru.ivansteklow.tf2mod.recipes.RefineryRecipes;
 import ru.ivansteklow.tf2mod.recipes.RefineryRecipes.RefineryRecipe;
 
@@ -24,6 +27,7 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 	public int time = 0;
 	public boolean isActive = false;
 	private Random rand = new Random();
+	private int sync = 0;
 
 	public ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
 		protected void onContentsChanged(int slot) {
@@ -45,6 +49,15 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
+		compound.setInteger("time", this.time);
+		compound.setInteger("maxTime", METAL_REFINERY_WORKTIME);
+		compound.setTag("items", this.itemStackHandler.serializeNBT());
+		return compound;
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		NBTTagCompound compound = new NBTTagCompound();
 		compound.setInteger("time", this.time);
 		compound.setInteger("maxTime", METAL_REFINERY_WORKTIME);
 		compound.setTag("items", this.itemStackHandler.serializeNBT());
@@ -115,6 +128,12 @@ public class MetalRefineryTileEntity extends TileEntity implements ITickable, IC
 				this.isActive = false;
 			}
 			((BlockMetalRefinery) this.getWorld().getBlockState(this.getPos()).getBlock()).setBlockActivated(isActive);
+			if (this.world.getBlockState(pos.offset(EnumFacing.DOWN)).getBlock() != Blocks.ANVIL)
+				this.world.destroyBlock(this.pos, true);
+			sync++;
+			sync %= 10;
+			if (sync == 0)
+				ModNetworkWrapper.INSTANCE.sendToServer(new PacketMetalRefinery(this.time, pos));
 		}
 	}
 

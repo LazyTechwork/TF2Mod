@@ -13,6 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -112,6 +113,14 @@ public class BlockMetalRefinery extends BlockBase implements ITileEntityProvider
 
 	public void setBlockActivated(boolean value) {
 		this.getDefaultState().withProperty(ACTIVATED, value);
+	}
+	
+	@Override
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+		if(worldIn.getBlockState(pos.offset(EnumFacing.DOWN)).getBlock() == Blocks.ANVIL)
+			return true;
+		else
+			return false;
 	}
 
 }

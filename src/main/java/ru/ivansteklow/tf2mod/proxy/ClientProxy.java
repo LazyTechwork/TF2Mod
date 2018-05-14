@@ -21,21 +21,11 @@ public class ClientProxy extends ServerProxy {
 	@Override
 	public void Init(FMLInitializationEvent e) {
 		super.Init(e);
-		// NetworkRegistry.INSTANCE.registerGuiHandler(ModCore.instance, new GuiHandler());
 	}
 
 	@Override
 	public void postInit(FMLPostInitializationEvent e) {
 		super.postInit(e);
-	}
-
-	@Override
-	public void registerModelBakeryVariants() {
-		/*ModelBakery.registerItemVariants(ModItems.itemChip, new ResourceLocation(Refs.MOD_ID, "chip_basic"),
-				new ResourceLocation(Refs.MOD_ID, "chip_advanced"));
-		ModelBakery.registerItemVariants(Item.getItemFromBlock(ModBlocks.blockBreaker),
-				new ResourceLocation(Refs.MOD_ID, "blockBreaker_basic"),
-				new ResourceLocation(Refs.MOD_ID, "blockBreaker_advanced"));*/
 	}
 
 }

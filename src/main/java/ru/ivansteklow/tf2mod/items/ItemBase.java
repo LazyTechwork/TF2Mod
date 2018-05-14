@@ -8,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class ItemBase extends Item {
@@ -27,8 +28,10 @@ public class ItemBase extends Item {
 
 	@Override
 	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		if (hasTooltip)
+		if (hasTooltip) {
+			tooltip.add(I18n.format("tooltip.quality") + ": " + this.quality.rarityColor + TextFormatting.BOLD + this.quality.rarityName);
 			tooltip.add(I18n.format("tooltip.items." + name));
+		}
 		else
 			super.addInformation(stack, player, tooltip, advanced);
 	}

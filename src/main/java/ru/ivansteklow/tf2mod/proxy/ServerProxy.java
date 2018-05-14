@@ -21,9 +21,5 @@ public class ServerProxy {
 	public void postInit(FMLPostInitializationEvent e) {
 
 	}
-
-	public void registerModelBakeryVariants() {
-
-	}
 	
 }

@@ -12,9 +12,13 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import ru.ivansteklow.tf2mod.config.ModConfig;
 import ru.ivansteklow.tf2mod.init.CraftTweaker;
 import ru.ivansteklow.tf2mod.init.References;
+import ru.ivansteklow.tf2mod.network.ModNetworkWrapper;
+import ru.ivansteklow.tf2mod.network.PacketMetalRefinery;
 import ru.ivansteklow.tf2mod.proxy.ServerProxy;
 
 @Mod(modid = References.MODID, name = References.NAME, version = References.VERSION, acceptedMinecraftVersions = References.ACCEPTED_VERSIONS, dependencies = References.MOD_DEPENDENCIES)
@@ -59,6 +63,12 @@ public class Core {
 		ArrayList<String> authors = new ArrayList<String>();
 		authors.add("IvanSteklow");
 		meta.authorList = authors;
+	}
+
+	@EventHandler
+	private void serverStarting(FMLServerStartingEvent event) {
+		ModNetworkWrapper.INSTANCE.registerMessage(PacketMetalRefinery.PacketMetalRefineryHandler.class, PacketMetalRefinery.class, 0,
+				Side.SERVER);
 	}
 
 }

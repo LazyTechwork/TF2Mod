@@ -14,6 +14,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import ru.ivansteklow.tf2mod.init.References;
@@ -69,10 +70,16 @@ public class BlockBase extends Block {
 
 	@Override
 	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		if (hasTooltip)
+		if (hasTooltip) {
+			tooltip.add(I18n.format("tooltip.quality") + ": " + this.quality.rarityColor + TextFormatting.BOLD + this.quality.rarityName);
 			tooltip.add(I18n.format("tooltip.blocks." + name));
+		}
 		else
 			super.addInformation(stack, player, tooltip, advanced);
+	}
+	
+	public EnumRarity getQuality() {
+		return quality;
 	}
 
 }

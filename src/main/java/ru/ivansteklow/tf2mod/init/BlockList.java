@@ -15,6 +15,7 @@ import ru.ivansteklow.isdev.handlers.BlockHandler;
 import ru.ivansteklow.tf2mod.blocks.BlockCrate;
 import ru.ivansteklow.tf2mod.blocks.BlockMetalRefinery;
 import ru.ivansteklow.tf2mod.blocks.BlockPickup;
+import ru.ivansteklow.tf2mod.blocks.RarityItemBlockBase;
 import ru.ivansteklow.tf2mod.enums.PickupTypeEnum;
 import ru.ivansteklow.tf2mod.tileentities.MetalRefineryTileEntity;
 
@@ -40,7 +41,7 @@ public class BlockList {
 		public static void registerItemBlocks(final RegistryEvent.Register<Item> event) {
 			final IForgeRegistry<Item> registry = event.getRegistry();
 			for (final Block block : BLOCKS) {
-				final ItemBlock item = new ItemBlock(block);
+				final ItemBlock item = new RarityItemBlockBase(block);
 				final ResourceLocation registryName = block.getRegistryName();
 				registry.register(item.setRegistryName(registryName));
 				BlockHandler.regItemBlockRender(block, References.MODID);

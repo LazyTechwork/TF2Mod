@@ -5,11 +5,11 @@ import java.util.List;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import ru.ivansteklow.tf2mod.Core;
-import ru.ivansteklow.tf2mod.client.gui.ProgressBar.ProgressBarDirection;
+import ru.ivansteklow.isdev.gui.HoveringText;
+import ru.ivansteklow.isdev.gui.ProgressBar;
+import ru.ivansteklow.isdev.gui.ProgressBar.ProgressBarDirection;
 import ru.ivansteklow.tf2mod.containers.MetalRefineryContainer;
 import ru.ivansteklow.tf2mod.init.References;
 import ru.ivansteklow.tf2mod.tileentities.MetalRefineryTileEntity;
@@ -23,6 +23,7 @@ public class MetalRefineryGui extends GuiContainer {
 			"textures/gui/metal_refinery.png");
 	private ProgressBar progressBar;
 	private MetalRefineryTileEntity te;
+	private HoveringText hText;
 
 	public int time, maxTime = 0;
 
@@ -47,12 +48,12 @@ public class MetalRefineryGui extends GuiContainer {
 		this.progressBar.draw(mc);
 		int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
 		int actualMouseY = mouseY - ((this.height - this.ySize) / 2);
-		if (actualMouseX >= 71 && actualMouseX <= 93 && actualMouseY >= 34 && actualMouseY <= 47) {
-			List<String> text = new ArrayList<String>();
-			text.add(TextFormatting.YELLOW + I18n.format("gui.metalrefinery.time_remain"));
-			text.add(TextFormatting.YELLOW + Integer.toString(this.time));
-			this.drawHoveringText(text, actualMouseX, actualMouseY);
-		}
+		List<String> text = new ArrayList<String>();
+		text.add(TextFormatting.YELLOW + I18n.format("gui.metalrefinery.time_remain"));
+		text.add(TextFormatting.YELLOW + Integer.toString((this.maxTime - this.time) / 20) + " "
+				+ I18n.format("gui.metalrefinery.time_remain.sec"));
+		this.hText = new HoveringText(this, actualMouseX, actualMouseY, 71, 34, 22, 13, text);
+		hText.draw();
 	}
 
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -63,12 +64,11 @@ public class MetalRefineryGui extends GuiContainer {
 
 	@Override
 	public void updateScreen() {
-		NBTTagCompound compound = new NBTTagCompound();
-		compound = this.te.writeToNBT(compound);
-		this.time = compound.getInteger("time");
-		this.maxTime = compound.getInteger("maxTime");
-		Core.logger.info(compound);
+		this.maxTime = this.te.getMaxTime();
 		super.updateScreen();
 	}
 
+	public void setProgress(int progress) {
+		this.time = progress;
+	}
 }
