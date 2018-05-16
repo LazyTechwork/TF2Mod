@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -13,6 +16,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import ru.ivansteklow.tf2mod.config.ModConfig;
 import ru.ivansteklow.tf2mod.init.CraftTweaker;
@@ -67,8 +71,15 @@ public class Core {
 
 	@EventHandler
 	private void serverStarting(FMLServerStartingEvent event) {
-		ModNetworkWrapper.INSTANCE.registerMessage(PacketMetalRefinery.PacketMetalRefineryHandler.class, PacketMetalRefinery.class, 0,
-				Side.SERVER);
+		ModNetworkWrapper.INSTANCE.registerMessage(PacketMetalRefinery.PacketMetalRefineryHandler.class,
+				PacketMetalRefinery.class, 0, Side.SERVER);
+	}
+
+	@EventHandler
+	private void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+		EntityPlayer player = event.player;
+		player.sendMessage(new TextComponentString(
+				TextFormatting.GOLD + "Welcome, " + player.getName() + ", to Team Fortress 2 Game Mode"));
 	}
 
 }

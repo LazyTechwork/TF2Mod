@@ -10,14 +10,18 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import ru.ivansteklow.isdev.inventory.SlotItemOutput;
+import ru.ivansteklow.tf2mod.network.ModNetworkWrapper;
+import ru.ivansteklow.tf2mod.network.PacketMetalRefinery;
 import ru.ivansteklow.tf2mod.tileentities.MetalRefineryTileEntity;
 
 public class MetalRefineryContainer extends Container {
 
 	private MetalRefineryTileEntity te;
+	private int time = 0;
 
 	public MetalRefineryContainer(IInventory playerInventory, MetalRefineryTileEntity te) {
 		this.te = te;
+		this.time = this.te.getElapsedTime();
 
 		addOwnSlots();
 		addPlayerSlots(playerInventory);
@@ -75,6 +79,13 @@ public class MetalRefineryContainer extends Container {
 			slot.onTake(playerIn, current);
 		}
 		return previous;
+	}
+	
+	@Override
+	public void detectAndSendChanges() {
+		if(this.time - this.te.getElapsedTime() > 10) {
+			ModNetworkWrapper.INSTANCE.sendToAll(new PacketMetalRefinery(this.time, this.te.getPos()));
+		}
 	}
 
 }

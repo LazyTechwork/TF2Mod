@@ -28,8 +28,8 @@ public class ItemBase extends Item {
 
 	@Override
 	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
+		tooltip.add(I18n.format("tooltip.quality") + ": " + this.quality.rarityColor + TextFormatting.BOLD + this.quality.rarityName);
 		if (hasTooltip) {
-			tooltip.add(I18n.format("tooltip.quality") + ": " + this.quality.rarityColor + TextFormatting.BOLD + this.quality.rarityName);
 			tooltip.add(I18n.format("tooltip.items." + name));
 		}
 		else

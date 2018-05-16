@@ -12,10 +12,11 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import ru.ivansteklow.isdev.interfaces.IModConfig;
 import ru.ivansteklow.tf2mod.init.References;
 
-public class ModConfig {
-	
+public class ModConfig implements IModConfig {
+
 	private static Configuration config;
 
 	public static final String CATEGORY_NAME_BLOCKS = "blocks";
@@ -81,6 +82,6 @@ public class ModConfig {
 			}
 		}
 
-}
-	
+	}
+
 }

@@ -27,11 +27,16 @@ public class PacketMetalRefinery implements IMessage {
 		this.x = pos.getX();
 		this.y = pos.getY();
 		this.z = pos.getZ();
+		this.isMessageValid = true;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-
+		this.time = buf.getInt(0);
+		this.x = buf.getInt(1);
+		this.y = buf.getInt(2);
+		this.z = buf.getInt(3);
+		this.isMessageValid = true;
 	}
 
 	@Override
@@ -44,7 +49,7 @@ public class PacketMetalRefinery implements IMessage {
 		buf.writeInt(this.z);
 	}
 
-	public class PacketMetalRefineryHandler implements IMessageHandler<PacketMetalRefinery, IMessage> {
+	public static class PacketMetalRefineryHandler implements IMessageHandler<PacketMetalRefinery, IMessage> {
 
 		@Override
 		public IMessage onMessage(PacketMetalRefinery message, MessageContext ctx) {
